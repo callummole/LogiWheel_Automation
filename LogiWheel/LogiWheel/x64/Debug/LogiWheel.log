@@ -1,0 +1,17 @@
+﻿  stdafx.cpp
+  LogiWheel.cpp
+  c:\program files (x86)\windows kits\8.1\include\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+  dllmain.cpp
+  Generating Code...
+c:\venlab data\shared_modules\logitech_force_feedback\logiwheel\logiwheel\logiwheel.cpp(30): warning C4715: 'play_constant_force': not all control paths return a value
+c:\venlab data\shared_modules\logitech_force_feedback\logiwheel\logiwheel\logiwheel.cpp(44): warning C4715: 'play_spring_force': not all control paths return a value
+c:\venlab data\shared_modules\logitech_force_feedback\logiwheel\logiwheel\logiwheel.cpp(50): warning C4715: 'stop_spring_force': not all control paths return a value
+c:\venlab data\shared_modules\logitech_force_feedback\logiwheel\logiwheel\logiwheel.cpp(56): warning C4715: 'play_damper_force': not all control paths return a value
+c:\venlab data\shared_modules\logitech_force_feedback\logiwheel\logiwheel\logiwheel.cpp(62): warning C4715: 'stop_damper_force': not all control paths return a value
+c:\venlab data\shared_modules\logitech_force_feedback\logiwheel\logiwheel\logiwheel.cpp(69): warning C4715: 'play_dirt_track': not all control paths return a value
+c:\venlab data\shared_modules\logitech_force_feedback\logiwheel\logiwheel\logiwheel.cpp(75): warning C4715: 'stop_dirt_track': not all control paths return a value
+c:\venlab data\shared_modules\logitech_force_feedback\logiwheel\logiwheel\logiwheel.cpp(96): warning C4715: 'getState': not all control paths return a value
+c:\venlab data\shared_modules\logitech_force_feedback\logiwheel\logiwheel\logiwheel.cpp(36): warning C4715: 'stop_constant_force': not all control paths return a value
+     Creating library C:\VENLAB data\shared_modules\Logitech_force_feedback\LogiWheel\x64\Debug\LogiWheel.lib and object C:\VENLAB data\shared_modules\Logitech_force_feedback\LogiWheel\x64\Debug\LogiWheel.exp
+  LogiWheel.vcxproj -> C:\VENLAB data\shared_modules\Logitech_force_feedback\LogiWheel\x64\Debug\LogiWheel.dll
+  LogiWheel.vcxproj -> C:\VENLAB data\shared_modules\Logitech_force_feedback\LogiWheel\x64\Debug\LogiWheel.pdb (Full PDB)
