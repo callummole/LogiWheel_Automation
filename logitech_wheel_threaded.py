@@ -242,7 +242,7 @@ class steeringWheelThreaded(threading.Thread, steeringWheel):
 	def set_position(self, desired_position):
 		"""Set the wheel position using the thread"""
 		
-		print ("LOGI WHEEL: CHANGING DESIRED POSITION: " + str(desired_position))
+		#print ("LOGI WHEEL: CHANGING DESIRED POSITION: " + str(desired_position))
 		self.desired_position = desired_position
 		
 
