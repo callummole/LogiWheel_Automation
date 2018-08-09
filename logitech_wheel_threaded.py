@@ -167,8 +167,8 @@ class steeringWheel:
 
 		#Error between desired and actual position
 		error = desired_position - norm_current_position
-				
 		#Derivative of error
+				
 		d_error = (error - self.error_t_minus_1) / dt		
 								
 								
@@ -206,13 +206,22 @@ class steeringWheelThreaded(threading.Thread, steeringWheel):
 	
 	def control_on(self):
 		"""Turn the pd controller on"""
+
+		print ("LOGI WHEEL: CONTROLLER ON")
 		self.__control_live = True
 		
 	def control_off(self):
 		"""Turn the pd controller off"""
 		self.__control_live = False
+		self.stop_constant_force()
+
+		print ("LOGI WHEEL: CONTROLLER OFF")
 		
 	
+	def getControlState(self):
+		"""returns control state"""
+		return self.__control_live
+
 	def run(self):
 			
 		dt = 1/100.0
@@ -222,6 +231,7 @@ class steeringWheelThreaded(threading.Thread, steeringWheel):
 			
 			if self.__control_live:
 				self.pid_step(self.desired_position, dt)
+			
 			t1 = time.time()
 			
 			dt_real = t1 - t0
@@ -232,6 +242,7 @@ class steeringWheelThreaded(threading.Thread, steeringWheel):
 	def set_position(self, desired_position):
 		"""Set the wheel position using the thread"""
 		
+		print ("LOGI WHEEL: CHANGING DESIRED POSITION: " + str(desired_position))
 		self.desired_position = desired_position
 		
 
