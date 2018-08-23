@@ -3,6 +3,7 @@ from ctypes import *
 import time
 import numpy as np
 from scipy.signal import sawtooth
+import pandas as pd
 
 import threading
 import os
@@ -160,7 +161,7 @@ class steeringWheel:
 		
 		return c + raw_pos * m
 		
-	def pid_step(self, desired_position, dt, tau_p = 500.0, tau_d = 20.0):
+	def pid_step(self, desired_position, dt, tau_p =400., tau_d = 20.0):
 		"""Pass the desired position in normalised units"""
 		
 		norm_current_position = self.norm_state(self.get_state())
@@ -224,7 +225,7 @@ class steeringWheelThreaded(threading.Thread, steeringWheel):
 
 	def run(self):
 			
-		dt = 1/100.0
+		dt = 1/60.0
 		while self.__thread_live:
 			
 			t0 = time.time()			
@@ -236,7 +237,7 @@ class steeringWheelThreaded(threading.Thread, steeringWheel):
 			
 			dt_real = t1 - t0
 			
-			time.sleep(1/200.0)
+			time.sleep(dt)
 
 			
 	def set_position(self, desired_position):
@@ -277,7 +278,7 @@ def test_sinusoid_thread():
 		timer = time.time() - t0 #Get the time
 
 		#Sinusoid state
-		state = np.sin(timer * 7) * 0.8
+		state = np.sin(timer * 1) * 0.7
 		#Sawtooth state
 #		state = sawtooth(timer * np.pi * 1.5, 0.5) * 0.8
 		
@@ -288,7 +289,7 @@ def test_sinusoid_thread():
 		true_state.append(wheel.get_state(normed = True))
 		all_time.append(timer)
 		
-		time.sleep(1/200.0)
+		time.sleep(1/60.0)
 		
 		if timer > 5:
 			
@@ -398,11 +399,11 @@ def test_constant_pd():
 	print("END")
 	
 	
-def test_sinusoid(run = False):
+def test_sinusoid(run = True):
 	
 	import matplotlib.pyplot as plt	
 	
-	steering_target = np.sin(np.linspace(0, 10, 60*10) * 1) * 0.9
+	steering_target = np.sin(np.linspace(0, 10, 60*10) * 0.5) * 0.3
 
 	if not run:
 		#Plot steering target
@@ -471,11 +472,97 @@ def test_sinusoid(run = False):
 		
 		return position, steering_target
 		
-
+def test_trout_playback(fname):
+	
+	"""Load a playback file and play it back. Then plot the results"""
+	
+	import matplotlib.pyplot as plt
+	
+	data = pd.read_csv(fname)
+	
+	steering_target = data['yawrate'].values
+	dt = 1/60.0
+	
+	print(data.head())
+	
+	run = True
+	if not run:
+		#Plot steering target
+		plt.plot(range(steering_target.size), steering_target, '-o')	
+		plt.show()
+		
+	if run:
+		#Set up a vizard window and get it's handle
+		viz.go()
+		window = viz.window
+		handle = window.getHandle()
+		
+		#Create a steeringWheel instance
+		wheel = steeringWheel(handle)	
+		wheel.init()
+		
+		#Set wheel to center
+#		wheel.play_spring_force(0, 100, 100)
+#		time.sleep(1)
+#		wheel.stop_spring_force()
+#		time.sleep(1)
+		
+		t0 = time.time()
+		timer = 0.0
+		
+		while timer < 1:
+		
+			old_timer = timer
+			timer = time.time() - t0
+				
+			dt = np.clip(timer - old_timer, 1e-10, 1e10)
+		
+			pos = wheel.get_state(normed = True)
+			#print("Pos: {}".format(pos))
+			wheel.pid_step(0.0, dt)		
+				
+			time.sleep(1/200.0)
+		
+		print("CENTRED")
+		
+		#init log
+		
+		position = []
+		
+		t0 = time.time()
+		timer = 0.0
+		i = 0
+		while i < steering_target.size:
+			
+			old_timer = timer
+			timer = time.time() - t0
+			
+			dt = np.clip(timer - old_timer, 1e-10, 1e10)
+			
+			#print(dt)
+			pos = wheel.get_state(normed = True)
+			position.append(pos)
+			#print("Pos: {}".format(pos))
+			wheel.pid_step(steering_target[i], dt)			
+				
+			time.sleep(1/60.0)
+			
+			i += 1
+		wheel.shutdown()
+		
+		plt.plot(range(steering_target.size), steering_target, 'k')	
+		plt.plot(range(steering_target.size), position, 'ro-')	
+		
+		plt.show()
+		
+		print("END")
 	
 if __name__ == '__main__':
 	
-	test_sinusoid_thread()
+	test_trout_playback('stock_5.csv')
+	#test_sinusoid_thread()
+	#test_sinusoid()
+	
 	#test_constant_pd_thread()
 	
 #	test_constant_pd()

@@ -1,4 +1,4 @@
 /LogitechSteeringWheelSDK*
 /old
 *.pyc
-.*csv
+*.csv
