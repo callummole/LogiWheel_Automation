@@ -242,9 +242,12 @@ class steeringWheelThreaded(threading.Thread, steeringWheel):
 			
 	def set_position(self, desired_position):
 		"""Set the wheel position using the thread"""
-		
+				
 		#print ("LOGI WHEEL: CHANGING DESIRED POSITION: " + str(desired_position))
 		self.desired_position = desired_position
+
+		if self.__control_live == False:
+			self.control_on()
 		
 
 def test_sinusoid_thread():
@@ -259,10 +262,18 @@ def test_sinusoid_thread():
 	wheel.init() #Initialise the wheel
 	wheel.start() #Start the wheels thread
 	
-	wheel.set_position(0) #Set the pd control target
+	
+	wheel.set_position(0.5) #Set the pd control target
 	wheel.control_on() #Turn the pd controller on
 	
-	time.sleep(0.5) #Give the wheel time to center
+	time.sleep(2) #Give the wheel time to center
+
+	wheel.control_off()
+
+	time.sleep(2)
+
+	wheel.set_position(np.sin(0) * 0.7)
+	wheel.control_on()
 	
 	#Clock counter
 	timer = 0
@@ -559,8 +570,8 @@ def test_trout_playback(fname):
 	
 if __name__ == '__main__':
 	
-	test_trout_playback('stock_5.csv')
-	#test_sinusoid_thread()
+	# test_trout_playback('stock_5.csv')
+	test_sinusoid_thread()
 	#test_sinusoid()
 	
 	#test_constant_pd_thread()
