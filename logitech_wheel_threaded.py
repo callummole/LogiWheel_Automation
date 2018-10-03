@@ -161,7 +161,7 @@ class steeringWheel:
 		
 		return c + raw_pos * m
 		
-	def pid_step(self, desired_position, dt, tau_p =400., tau_d = 20.0):
+	def pid_step(self, desired_position, dt, tau_p =200., tau_d = 20.0):
 		"""Pass the desired position in normalised units"""
 		
 		norm_current_position = self.norm_state(self.get_state())
