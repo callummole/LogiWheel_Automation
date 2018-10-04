@@ -161,7 +161,7 @@ class steeringWheel:
 		
 		return c + raw_pos * m
 		
-	def pid_step(self, desired_position, dt, tau_p =200., tau_d = 20.0):
+	def pid_step(self, desired_position, dt, tau_p =400.0, tau_d = 20.0):
 		"""Pass the desired position in normalised units"""
 		
 		norm_current_position = self.norm_state(self.get_state())
@@ -571,12 +571,12 @@ def test_trout_playback(fname):
 if __name__ == '__main__':
 	
 	# test_trout_playback('stock_5.csv')
-	test_sinusoid_thread()
+	#test_sinusoid_thread()
 	#test_sinusoid()
 	
 	#test_constant_pd_thread()
 	
-#	test_constant_pd()
+	test_constant_pd()
 	
 #	all_position, target = test_sinusoid(run = True)
 #	
